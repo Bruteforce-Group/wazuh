@@ -485,7 +485,7 @@ def save_logs(test_name: str):
     # Save nginx log
     with open(os.path.join(test_logs_path, f'test_{test_name}-nginx-lb.log'), mode='w') as f_log:
         current_process = subprocess.Popen(
-                ["docker", "logs", "env_nginx-lb_1"],
+                ["docker", "logs", "env-nginx-lb-1"],
                 stdout=f_log, stderr=subprocess.STDOUT, universal_newlines=True)
         current_process.wait()
 
