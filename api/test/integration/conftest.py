@@ -482,7 +482,7 @@ def save_logs(test_name: str):
         except subprocess.CalledProcessError:
             continue
 
-    # Save nginx log
+    # Save nginx-lb log
     with open(os.path.join(test_logs_path, f'test_{test_name}-nginx-lb.log'), mode='w') as f_log:
         current_process = subprocess.Popen(
                 ["docker", "logs", "env-nginx-lb-1"],
