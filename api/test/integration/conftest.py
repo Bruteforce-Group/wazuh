@@ -191,6 +191,7 @@ def wait_env_up():
         managers_health = check_health(interval=values_env_up['interval'],
                                     only_check_master_health=env_mode == standalone_env_mode)
         agents_health = check_health(interval=values_env_up['interval'], node_type='agent', agents=list(range(1, 9)))
+        nginx_health = check_health(interval=values_env_up['interval'], node_type='nginx-lb')
         # Check if entrypoint was successful
         try:
             error_message = subprocess.check_output(["docker", "exec", "-t", "env-wazuh-master-1", "sh", "-c",
@@ -199,7 +200,7 @@ def wait_env_up():
         except subprocess.CalledProcessError:
             pass
 
-        if managers_health and agents_health:
+        if managers_health and agents_health and nginx_health:
             time.sleep(values_env_up['interval'])
             return
         else:
@@ -249,6 +250,7 @@ def start_containers():
             ["docker", "compose", "--profile", env_mode, "up", "-d"], env=dict(os.environ, ENV_MODE=env_mode),
             stdout=f_docker, stderr=subprocess.STDOUT, universal_newlines=True)
             current_process.wait()
+
 
             if current_process.returncode == 0:
                 time.sleep(values_build_env['interval'])
@@ -328,7 +330,7 @@ def check_health(interval: int = 10, node_type: str = 'manager', agents: list = 
                 return False
     elif node_type == 'nginx-lb':
         health = subprocess.check_output(
-            f"docker inspect env_nginx-lb_1 -f '{{{{json .State.Health.Status}}}}'", shell=True)
+            f"docker inspect env-nginx-lb-1 -f '{{{{json .State.Health.Status}}}}'", shell=True)
         if not health.startswith(b'"healthy"'):
             return False
     else:
