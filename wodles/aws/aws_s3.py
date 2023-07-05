@@ -3938,6 +3938,14 @@ def get_script_arguments():
     if parsed_args.iam_role_duration is not None and parsed_args.iam_role_arn is None:
         raise argparse.ArgumentTypeError('Used --iam_role_duration argument but no --iam_role_arn provided.')
 
+    if parsed_args.subscriber is not None:
+        if parsed_args.queue is None:
+            raise argparse.ArgumentTypeError('Used a subscriber but no --queue provided.')
+        if parsed_args.iam_role_arn is None:
+            raise argparse.ArgumentTypeError('Used a subscriber but no --iam_role_arn provided.')
+        if parsed_args.external_id is None:
+            raise argparse.ArgumentTypeError('Used a subscriber but no --external_id provided.')
+
     return parsed_args
 
 
