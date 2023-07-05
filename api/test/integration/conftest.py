@@ -13,7 +13,6 @@ import requests
 import urllib3
 import yaml
 from py.xml import html
-from git import Repo
 
 global env_mode
 global build
@@ -210,6 +209,8 @@ def wait_env_up():
 def build_images():
     """Builds docker images.
     """
+    from git import Repo
+    
     os.chdir(env_path)
     os.makedirs(test_logs_path, exist_ok=True)
     with open(docker_log_path, mode='w') as f_docker:
