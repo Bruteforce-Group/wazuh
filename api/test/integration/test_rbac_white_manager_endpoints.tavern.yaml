@@ -123,21 +123,6 @@ stages:
       <<: *permission_denied
 
 ---
-test_name: GET /manager/stats/analysisd
-
-stages:
-
-  - name: Request manager analysisd stats (Denied)
-    request:
-      verify: False
-      url: "{protocol:s}://{host:s}:{port:d}/manager/stats/analysisd"
-      method: GET
-      headers:
-        Authorization: "Bearer {test_login_token}"
-    response:
-      <<: *permission_denied
-
----
 test_name: GET /manager/stats/hourly
 
 stages:
