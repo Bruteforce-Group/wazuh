@@ -37,6 +37,7 @@ import signal
 import socket
 import sqlite3
 import sys
+from typing import Optional
 
 try:
     import boto3
@@ -3206,6 +3207,7 @@ class AWSSQSQueue(WazuhIntegration):
 
     def __init__(self, name: str, iam_role_arn: str, access_key: str = None, secret_key: str = None,
                  external_id: str = None, sts_endpoint=None, service_endpoint=None, **kwargs):
+        self._validate_params(external_id=external_id, name=name, iam_role_arn=iam_role_arn)
         self.sqs_name = name
         WazuhIntegration.__init__(self, access_key=access_key, secret_key=secret_key, iam_role_arn=iam_role_arn,
                                   aws_profile=None, external_id=external_id, service_name='sqs',
@@ -3219,6 +3221,30 @@ class AWSSQSQueue(WazuhIntegration):
                                                         iam_role_arn=self.iam_role_arn,
                                                         service_endpoint=service_endpoint,
                                                         sts_endpoint=sts_endpoint)
+
+    def _validate_params(self, external_id: Optional[str], name: Optional[str], iam_role_arn: Optional[str]):
+        """
+        Class for getting AWS SQS Queue notifications.
+
+        Parameters
+        ----------
+        external_id : Optional[str]
+            The name of the External ID to use.
+        name: Optional[str]
+            Name of the SQS Queue.
+        iam_role_arn : Optional[str]
+            IAM Role.
+        """
+
+        if iam_role_arn is None:
+            print('ERROR: Used a subscriber but no --iam_role_arn provided.')
+            sys.exit(21)
+        if name is None:
+            print('ERROR: Used a subscriber but no --queue provided.')
+            sys.exit(21)
+        if external_id is None:
+            print('ERROR: Used a subscriber but no --external_id provided.')
+            sys.exit(21)
 
     def _get_sqs_url(self) -> str:
         """Get the URL of the AWS SQS queue
@@ -3937,14 +3963,6 @@ def get_script_arguments():
 
     if parsed_args.iam_role_duration is not None and parsed_args.iam_role_arn is None:
         raise argparse.ArgumentTypeError('Used --iam_role_duration argument but no --iam_role_arn provided.')
-
-    if parsed_args.subscriber is not None:
-        if parsed_args.queue is None:
-            raise argparse.ArgumentTypeError('Used a subscriber but no --queue provided.')
-        if parsed_args.iam_role_arn is None:
-            raise argparse.ArgumentTypeError('Used a subscriber but no --iam_role_arn provided.')
-        if parsed_args.external_id is None:
-            raise argparse.ArgumentTypeError('Used a subscriber but no --external_id provided.')
 
     return parsed_args
 
