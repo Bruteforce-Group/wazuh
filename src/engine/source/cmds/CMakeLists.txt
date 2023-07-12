@@ -26,6 +26,7 @@ target_link_libraries(cmds
     eMessages
     metrics
     schemf
+    rbac
 )
 
 target_include_directories(cmds
