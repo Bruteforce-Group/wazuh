@@ -28,7 +28,7 @@ TEST_F(PolicyManager, instance_fail_null_builder)
 {
     try
     {
-        router::PolicyManager(nullptr, 1);
+        router::PolicyManager policyManager(nullptr, 1);
         FAIL();
     }
     catch (const std::runtime_error& e)
@@ -46,7 +46,7 @@ TEST_F(PolicyManager, zero_instances)
     auto builder = aux::getFakeBuilder();
     try
     {
-        router::PolicyManager(builder, 0);
+        router::PolicyManager policyManager(builder, 0);
         FAIL();
     }
     catch (const std::runtime_error& e)

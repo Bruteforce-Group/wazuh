@@ -11,7 +11,7 @@ namespace aux
 namespace
 {
 
-base::Expression coutOutputHelper_test(const std::string& targetField,
+base::Expression coutOutputHelperTest(const std::string& targetField,
                                        const std::string& rawName,
                                        const std::vector<std::string>& rawParameters,
                                        std::shared_ptr<defs::IDefinitions> definitions)
@@ -46,7 +46,7 @@ std::shared_ptr<builder::Builder> getFakeBuilder()
     builder::internals::registerHelperBuilders(helperRegistry);
     builder::internals::registerBuilders(registry, dependencies);
 
-    helperRegistry->registerBuilder(coutOutputHelper_test, "coutOutputHelper_test");
+    helperRegistry->registerBuilder(coutOutputHelperTest, "coutOutputHelper_test");
 
     auto builder = std::make_shared<builder::Builder>(store, registry);
 

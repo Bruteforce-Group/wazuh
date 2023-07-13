@@ -11,9 +11,9 @@
 #include "register.hpp"
 #include <testsCommon.hpp>
 
-constexpr auto env_1 = "policy/env_1/0";
-constexpr auto env_2 = "policy/env_2/0";
-constexpr auto env_default = "policy/default/0";
+constexpr auto ENV_1 = "policy/env_1/0";
+constexpr auto ENV_2 = "policy/env_2/0";
+constexpr auto ENV_DEFAULT = "policy/default/0";
 
 class RuntimeEnvironment : public ::testing::Test
 {
@@ -27,7 +27,7 @@ protected:
 TEST_F(RuntimeEnvironment, build_ok)
 {
     auto builder = aux::getFakeBuilder();
-    auto policy = std::make_shared<router::RuntimePolicy>(env_1);
+    auto policy = std::make_shared<router::RuntimePolicy>(ENV_1);
     auto error = policy->build(builder);
     ASSERT_FALSE(error.has_value()) << error.value().message;
 }
@@ -51,7 +51,7 @@ TEST_F(RuntimeEnvironment, build_fail_builder)
 TEST_F(RuntimeEnvironment, build_2_times)
 {
     auto builder = aux::getFakeBuilder();
-    auto policy = std::make_shared<router::RuntimePolicy>(env_1);
+    auto policy = std::make_shared<router::RuntimePolicy>(ENV_1);
     auto error = policy->build(builder);
     ASSERT_FALSE(error.has_value()) << error.value().message;
     error = policy->build(builder);
@@ -61,7 +61,7 @@ TEST_F(RuntimeEnvironment, build_2_times)
 
 TEST_F(RuntimeEnvironment, processEvent_not_built)
 {
-    auto policy = std::make_shared<router::RuntimePolicy>(env_1);
+    auto policy = std::make_shared<router::RuntimePolicy>(ENV_1);
     auto e = base::parseEvent::parseWazuhEvent(aux::sampleEventsStr[0]);
     auto error = policy->processEvent(e);
     ASSERT_TRUE(error.has_value());
@@ -71,7 +71,7 @@ TEST_F(RuntimeEnvironment, processEvent_not_built)
 TEST_F(RuntimeEnvironment, processEvent_1_event)
 {
     auto builder = aux::getFakeBuilder();
-    auto policy = std::make_shared<router::RuntimePolicy>(env_1);
+    auto policy = std::make_shared<router::RuntimePolicy>(ENV_1);
     auto error = policy->build(builder);
     ASSERT_FALSE(error.has_value()) << error.value().message;
 
@@ -89,7 +89,7 @@ TEST_F(RuntimeEnvironment, processEvent_1_event)
 TEST_F(RuntimeEnvironment, processEvent_30_event)
 {
     auto builder = aux::getFakeBuilder();
-    auto policy = std::make_shared<router::RuntimePolicy>(env_1);
+    auto policy = std::make_shared<router::RuntimePolicy>(ENV_1);
     auto error = policy->build(builder);
     ASSERT_FALSE(error.has_value()) << error.value().message;
     auto decoderPath = json::Json::formatJsonPath("~decoder");
