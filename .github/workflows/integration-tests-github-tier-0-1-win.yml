@@ -84,7 +84,7 @@ jobs:
       # Run github integration tests.
       - name: Run github integration tests
         run: |
-          dir /s /b C:\ossec.log
+          Get-ChildItem -Path C:\ -Filter "ossec.log" -Recurse -ErrorAction SilentlyContinue
           cd C:\wazuh\tests\integration
           python -m pytest -vvx --html=report.html test_github\
           type report.html
