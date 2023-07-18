@@ -130,6 +130,8 @@ class PKGWrapper final : public IPackageWrapper
                 [this, &filePath](std::istream & data)
                 {
                     std::string line;
+                    std::string bundleShortVersionString;
+                    std::string bundleVersion;
 
                     while (std::getline(data, line))
                     {
@@ -143,7 +145,12 @@ class PKGWrapper final : public IPackageWrapper
                         else if (line == "<key>CFBundleShortVersionString</key>" &&
                                  std::getline(data, line))
                         {
-                            m_version = getValueFnc(line);
+                            bundleShortVersionString = getValueFnc(line);
+                        }
+                        else if (line == "<key>CFBundleVersion</key>" &&
+                                 std::getline(data, line))
+                        {
+                            bundleVersion = getValueFnc(line);
                         }
                         else if (line == "<key>LSApplicationCategoryType</key>" &&
                                  std::getline(data, line))
@@ -164,6 +171,14 @@ class PKGWrapper final : public IPackageWrapper
                         }
                     }
 
+                    if(!bundleShortVersionString.empty() && Utils::startsWith(bundleVersion, bundleShortVersionString))
+                    {
+                        m_version = bundleVersion;
+                    }
+                    else
+                    {
+                        m_version = bundleShortVersionString;
+                    }
                     m_architecture = UNKNOWN_VALUE;
                     m_multiarch = UNKNOWN_VALUE;
                     m_priority = UNKNOWN_VALUE;
