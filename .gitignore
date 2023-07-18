@@ -99,6 +99,7 @@ src/win32/VERSION
 src/win32/REVISION
 src/libwazuhshared.*
 src/libwazuhext.*
+src/win32/libgcc_s_dw2-1.*
 
 # Eclipse files
 .cproject
