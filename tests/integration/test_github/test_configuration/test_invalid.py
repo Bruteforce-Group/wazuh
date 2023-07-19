@@ -48,10 +48,12 @@ tags:
     - github_configuration
 '''
 import pytest
+import sys
 from pathlib import Path
 
 from wazuh_testing.constants.paths.logs import WAZUH_LOG_PATH
-from wazuh_testing.modules.modulesd.configuration import MODULESD_DEBUG
+from wazuh_testing.constants.platforms import WINDOWS
+from wazuh_testing.modules.modulesd.configuration import MODULESD_DEBUG, WINDOWS_DEBUG
 from wazuh_testing.modules.modulesd import patterns
 from wazuh_testing.tools.monitors.file_monitor import FileMonitor
 from wazuh_testing.utils.configuration import get_test_cases_data
@@ -70,8 +72,12 @@ cases_path = Path(TEST_CASES_PATH, 'cases_invalid_configuration.yaml')
 config_parameters, test_metadata, test_cases_ids = get_test_cases_data(cases_path)
 test_configuration = load_configuration_template(configs_path, config_parameters, test_metadata)
 daemons_handler_configuration = {'all_daemons': True, 'ignore_errors': True}
-local_internal_options = {MODULESD_DEBUG: '2'}
 
+if sys.platform == WINDOWS:
+    local_internal_options = {WINDOWS_DEBUG: '2'}
+else:
+    local_internal_options = {MODULESD_DEBUG: '2'}
+    
 # Tests
 @pytest.mark.parametrize('test_configuration, test_metadata', zip(test_configuration, test_metadata), ids=test_cases_ids)
 def test_invalid(test_configuration, test_metadata, set_wazuh_configuration, configure_local_internal_options,
