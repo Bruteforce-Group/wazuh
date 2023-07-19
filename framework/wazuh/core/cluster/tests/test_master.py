@@ -1408,10 +1408,13 @@ def test_master_handler_connection_lost(clean_up_mock, connection_lost_mock, log
     master_handler.sync_tasks = {"key": PendingTaskMock()}
     master_handler.connection_lost(Exception())
 
+<<<<<<< HEAD
     for pending_task_mock in master_handler.sync_tasks.values():
         assert pending_task_mock.task.cancel_called
 
     connection_lost_mock.assert_called_once()
+=======
+>>>>>>> bba9fd91d8b8ca78bd1ef8346f6d8221a95b7eea
     clean_up_mock.assert_called_once_with(node_name=master_handler.name)
 
 

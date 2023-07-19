@@ -982,7 +982,11 @@ class MasterHandler(server.AbstractServerHandler, c_common.WazuhCommon):
         for pending_task in self.sync_tasks.values():
             pending_task.task.cancel()
 
+<<<<<<< HEAD
         # Clean cluster files from previous executions.
+=======
+        # Clean cluster files from previous executions 
+>>>>>>> bba9fd91d8b8ca78bd1ef8346f6d8221a95b7eea
         cluster.clean_up(node_name=self.name)
 
 
