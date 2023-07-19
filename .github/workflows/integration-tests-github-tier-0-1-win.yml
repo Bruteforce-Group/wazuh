@@ -42,7 +42,7 @@ jobs:
   # Execute the tests on windows.
   run-test:
     needs: build
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
