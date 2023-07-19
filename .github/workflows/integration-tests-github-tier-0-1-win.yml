@@ -88,3 +88,9 @@ jobs:
           python -m pytest -vvs --html=report.html test_github\
           type report.html
           type "C:\Program Files (x86)\ossec-agent\ossec.log"
+      # Upload html artifacts.
+      - name: Upload Artifact html
+        uses: actions/upload-artifact@v3
+        with:
+          name: ossec-agent
+          path: C:\Program Files (x86)\ossec-agent
