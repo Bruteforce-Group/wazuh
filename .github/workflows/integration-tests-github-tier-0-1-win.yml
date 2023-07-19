@@ -89,8 +89,8 @@ jobs:
           type report.html
           type "C:\Program Files (x86)\ossec-agent\ossec.log"
       # Upload html artifacts.
-      - name: Upload Artifact html
+      - name: Upload Artifact test-logs
         uses: actions/upload-artifact@v3
         with:
-          name: ossec-agent
-          path: C:\Program Files (x86)\ossec-agent
+          name: test-logs
+          path: C:\wazuh\tests\integration
