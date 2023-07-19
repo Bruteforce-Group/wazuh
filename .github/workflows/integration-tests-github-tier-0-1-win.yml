@@ -91,6 +91,7 @@ jobs:
       # Upload html artifacts.
       - name: Upload Artifact test-logs
         uses: actions/upload-artifact@v3
+        if: failure()
         with:
           name: test-logs
           path: C:\wazuh\tests\integration
