@@ -51,6 +51,7 @@ import pytest
 import sys
 from pathlib import Path
 
+from wazuh_testing.constants.paths.configurations import WAZUH_CONF_PATH
 from wazuh_testing.constants.paths.logs import WAZUH_LOG_PATH
 from wazuh_testing.constants.platforms import WINDOWS
 from wazuh_testing.modules.modulesd.configuration import MODULESD_DEBUG, WINDOWS_DEBUG
@@ -60,6 +61,16 @@ from wazuh_testing.utils.configuration import get_test_cases_data
 from wazuh_testing.utils.configuration import load_configuration_template
 from wazuh_testing.utils import callbacks
 from . import CONFIGS_PATH, TEST_CASES_PATH
+
+def mostrar_contenido_archivo(path):
+    try:
+        with open(path, 'r') as archivo:
+            contenido = archivo.read()
+            print(contenido)
+    except FileNotFoundError:
+        print(f"No se encontró el archivo en el path: {path}")
+    except IOError:
+        print(f"No se pudo abrir el archivo: {path}")
 
 # Marks
 pytestmark = pytest.mark.tier(level=0)
@@ -77,7 +88,7 @@ if sys.platform == WINDOWS:
     local_internal_options = {WINDOWS_DEBUG: '2'}
 else:
     local_internal_options = {MODULESD_DEBUG: '2'}
-    
+
 # Tests
 @pytest.mark.parametrize('test_configuration, test_metadata', zip(test_configuration, test_metadata), ids=test_cases_ids)
 def test_invalid(test_configuration, test_metadata, set_wazuh_configuration, configure_local_internal_options,
@@ -128,7 +139,9 @@ def test_invalid(test_configuration, test_metadata, set_wazuh_configuration, con
     tags:
         - invalid_settings
     '''
-
+    mostrar_contenido_archivo(WAZUH_CONF_PATH)
+    mostrar_contenido_archivo(WAZUH_LOG_PATH)
+    
     wazuh_log_monitor = FileMonitor(WAZUH_LOG_PATH)
     wazuh_log_monitor.start(callback=callbacks.generate_callback(patterns.MODULESD_CONFIGURATION_ERROR, {
                               'error_type': str(test_metadata['error_type']),
