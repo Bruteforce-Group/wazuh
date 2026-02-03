@@ -58,7 +58,7 @@ numpy==1.21.6
 openapi-spec-validator==0.2.6
 packaging==20.9
 pathlib==1.0.1
-protobuf==3.19.6
+protobuf==6.33.5
 proto-plus==1.19.0
 psutil==5.8.0
 pyarrow==8.0.0
